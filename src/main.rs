@@ -6,6 +6,7 @@ use bevy_inspector_egui::InspectorOptions;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 mod pig;
+mod ui;
 
 #[derive(Component, InspectorOptions, Default, Reflect)]
 #[reflect(Component, InspectorOptions)]
@@ -32,7 +33,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             texture,
             ..default()
         },
-        Player { speed: 100.0 },
+        Player { speed: 50.0 },
         Name::new("Player")
     ));
 }
@@ -58,7 +59,8 @@ fn main() {
         )
         .insert_resource(Money(100.0))
         .add_plugins(pig::PigPlugin)
-        .add_systems(Startup, setup)
+        .add_plugins(ui::GameUI)
+        .add_systems(Startup, setup).register_type::<Player>()
         .add_systems(Update, character_movement)
         .run();
 }
